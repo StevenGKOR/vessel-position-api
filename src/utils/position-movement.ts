@@ -1,6 +1,7 @@
-/** Maximum plausible distance between two reports (km), regardless of elapsed time. */
-export const MAX_PLAUSIBLE_DISTANCE_KM = 50000;
+/** Upper-bound vessel speed used for movement validation (knots). */
+export const MAX_VESSEL_SPEED_KNOTS = 50;
 
+const KNOTS_TO_KM_PER_HOUR = 1.852;
 const COORDINATE_EPSILON = 0.00001;
 const EARTH_RADIUS_KM = 6371;
 
@@ -33,8 +34,8 @@ export const distanceKm = (
   return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(a));
 };
 
-export const maxAllowedDistanceKm = (_hoursApart: number): number =>
-  MAX_PLAUSIBLE_DISTANCE_KM;
+export const maxAllowedDistanceKm = (hoursApart: number): number =>
+  MAX_VESSEL_SPEED_KNOTS * KNOTS_TO_KM_PER_HOUR * hoursApart;
 
 const formatDuration = (hoursApart: number): string => {
   if (hoursApart >= 48) {

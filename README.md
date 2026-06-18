@@ -112,8 +112,18 @@ Expected first run on the provided CSV: ~26,979 inserted, ~3 rejected. A second 
 ## Tests
 
 ```bash
-npm run test:e2e
+npm run test          # unit + e2e
+npm run test:unit     # unit only
+npm run test:e2e      # e2e only
 npm run typecheck
+```
+
+```
+test/
+  unit/              # DTO + pure logic (<200 lines each)
+  e2e/               # HTTP integration, one feature per file
+  create-test-app.ts # shared Nest bootstrap (e2e only)
+  fixtures.ts        # shared test data
 ```
 
 ## Project layout
