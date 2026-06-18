@@ -12,8 +12,9 @@
     "start:prod": "node dist/main",
     "ingest": "ts-node scripts/ingest.ts",
     "lint": "eslint \"{src,test,scripts}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test": "jest --config jest.config.json",
+    "test:unit": "jest --config jest.config.json --selectProjects unit",
+    "test:e2e": "jest --config jest.config.json --selectProjects e2e --runInBand",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -50,18 +51,5 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "testEnvironment": "node"
   }
 }
