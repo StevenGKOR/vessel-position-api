@@ -8,9 +8,11 @@ import {
   Max,
   Min,
   Validate,
+  ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+import { isAtSea } from '../utils/land-water';
 
 @ValidatorConstraint({ name: 'isNotInFuture', async: false })
 export class IsNotInFutureConstraint implements ValidatorConstraintInterface {
@@ -27,6 +29,23 @@ export class IsNotInFutureConstraint implements ValidatorConstraintInterface {
 
   defaultMessage(): string {
     return 'Received time UTC must not be in the future';
+  }
+}
+
+@ValidatorConstraint({ name: 'isAtSea', async: false })
+export class IsAtSeaConstraint implements ValidatorConstraintInterface {
+  validate(_value: unknown, args: ValidationArguments): boolean {
+    const dto = args.object as CreatePositionDto;
+
+    if (typeof dto.latitude !== 'number' || typeof dto.longitude !== 'number') {
+      return true;
+    }
+
+    return isAtSea(dto.latitude, dto.longitude);
+  }
+
+  defaultMessage(): string {
+    return 'Latitude and longitude must correspond to a position at sea';
   }
 }
 
@@ -70,5 +89,6 @@ export class CreatePositionDto {
   )
   @Min(-180, { message: 'Longitude must be greater than or equal to -180' })
   @Max(180, { message: 'Longitude must be less than or equal to 180' })
+  @Validate(IsAtSeaConstraint)
   longitude!: number;
 }
