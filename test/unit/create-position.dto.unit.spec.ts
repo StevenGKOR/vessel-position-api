@@ -68,4 +68,13 @@ describe('CreatePositionDto', () => {
     const errors = await validateCreatePosition({ ...valid, extra: true });
     expect(errors.length).toBeGreaterThan(0);
   });
+
+  it('fails when coordinates are on land', async () => {
+    const errors = await validateCreatePosition({
+      ...valid,
+      latitude: 48.85,
+      longitude: 2.35,
+    });
+    expect(errors.some((e) => e.property === 'longitude')).toBe(true);
+  });
 });
